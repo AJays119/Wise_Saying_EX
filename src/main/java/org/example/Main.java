@@ -2,6 +2,7 @@ package org.example;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Main
@@ -17,56 +18,53 @@ class Sol1
 {
     public void run()
     {
-        int i = 0; //명언 번호
-        int j = 0; //리스트 숫자
-        int a = 0; //배열 갯수
-        int b = 1; //리스트 불러올 갯수
+        Scanner sc = new Scanner(System.in);
 
         String exit = "종료";
         String input = null;
-        String input2 = null;
         String insert = "등록";
         String catalog = "목록";
 
-        ArrayList<String> List = new ArrayList<>();
+        ArrayList<WiseSaying> List = new ArrayList<>();
 
-        Scanner sc = new Scanner(System.in);
+
+        long WiseSayingId = 0;
+        long lastWiseSayingId = 0;
 
 
         System.out.println("== 명언 앱 ==");
-        System.out.println("등록 | 목록 | 종료");
 
         while ( true )
         {
             System.out.print("명령) ");
-            input = sc.nextLine();
+            input = sc.nextLine().trim();
 
             if (input.equals(insert))
             {
+                long id = WiseSayingId + 1;
                 System.out.print("명언 : ");
-                input = sc.nextLine();
+                String content = sc.nextLine().trim();
+                System.out.print("작가 : ");
+                String authorName = sc.nextLine().trim();
 
-                if (input != null)
-                {
-                    System.out.print("작가 : ");
-                    input2 = sc.nextLine();
+                WiseSaying wise = new WiseSaying(id, content, authorName);
+                List.add(wise);
 
-                    i++;
-                    j++;
-
-                    System.out.println(i + "번 명언이 등록 되었습니다.");
-                }
+                WiseSayingId++;
+                System.out.printf("%d번 명언이 등록 되었습니다.\n", id);
+                lastWiseSayingId = id;
             }
 
             if (input.equals(catalog))
             {
-                System.out.println("------------------------------");
+                System.out.println("번호 | 작가 | 명언");
+                System.out.println("-".repeat(30));
 
-                for (b = 1; b <= List.size(); b++)
+                for (int i = 0; i < List.size(); i++)
                 {
-                    System.out.println(b + " / " + List.get(b));
+                    WiseSaying wise = List.get(i);
+                    System.out.printf("%d / %s / %s\n", wise.getId(), wise.getAuthorName(), wise.getContent());
                 }
-
             }
 
             if (input.equals(exit))
@@ -74,8 +72,34 @@ class Sol1
                 sc.close();
                 break;
             }
-
-            List.add(input + " / " + input2);
         }
+    }
+}
+
+class WiseSaying
+{
+    private long id;
+    private String content;
+    private String authorName;
+    public WiseSaying(long id, String content, String authorName)
+    {
+        this.id = id;
+        this.content = content;
+        this.authorName = authorName;
+    }
+
+    public long getId()
+    {
+        return id;
+    }
+
+    public String getContent()
+    {
+        return content;
+    }
+
+    public String getAuthorName()
+    {
+        return authorName;
     }
 }
